@@ -2,13 +2,13 @@
 
 A small helper script for surf which:
 
-- on MOD+g calls dmenu to read user input
-
-- interprets stuff like
+- on MOD+g calls dmenu to read user input interprets stuff like
 
       `g rtp sdp`
 
   as a request to google for the latter two strings.
+
+- on MOD+b adds a bookmark to a preconfigured file
 
 ## Usage
 
@@ -21,6 +21,12 @@ definition in config.h:
 	    "surf.rc $0 $1 $2",\
 	    p, q, winid, NULL } }
 
+and add
+
+    { MODKEY, GDK_b, spawn, SETPROP("_SURF_BMARK", "_SURF_B    MARK") },
+
+to the keys array.
+
 ### Googling
 
 `g <word>[ <word>]*`
@@ -30,6 +36,7 @@ or
 `<word>[ <word>]+`
 
 (a single `<word>` is interpreted as an URL)
+
 
 ## Notes
 

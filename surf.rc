@@ -20,13 +20,26 @@ fn s_xprop {
 	if(test -n $2) xprop -id $xid -f $1 8s -set $1 $2
 }
 
-log surf.rc p $1 q $2 xid $3
+fn s_write_f {
+  if(test -n $2){
+    log $1 ' <- ' $2
+    echo $2 >> $1
+  }
+}
+
+log surf.rc $1 $2 $3
 
 switch($p) {
+  case _SURF_BMARK
+	log s_write_f $bmarks $uri
+	s_write_f $bmarks $uri
+	sort -u -o $bmarks $bmarks
+
   case _SURF_FIND
 	ret=`{echo $kw | dmenu -e $xid -p 'find:'}
 	log s_xprop $q $ret
 	s_xprop $q $ret
+
   case _SURF_URI
 	sel=`{tac $bmarks >[2] /dev/null | dmenu -e $xid -p 'uri [dgtwy*]:'}
 	if(test -z $"sel){
