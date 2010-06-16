@@ -1,14 +1,14 @@
 # surf.rc
 
-A small helper script for surf which:
+A small helper script for surf which, on:
 
-- on MOD+g calls dmenu to read user input interprets stuff like
+- MOD+g calls dmenu to read user input interprets stuff like
 
-      `g rtp sdp`
+      g rtp sdp
 
   as a request to google for the latter two strings.
 
-- on MOD+b adds a bookmark to a preconfigured file
+- MOD+b adds a bookmark to a preconfigured file
 
 ## Usage
 
@@ -42,3 +42,10 @@ or
 
 This script is heavily inspired by the original shell version
 surf.sh from the suckless mailing list.
+
+See also:
+
+  - [surf at suckless](http://surf.suckless.org)
+
+  - [bmarks script at
+    suckless](http://surf.suckless.org/files/bmarks)
