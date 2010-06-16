@@ -1,0 +1,53 @@
+#!/usr/bin/env rc
+
+p=$1	# property to read/select
+q=$2	# property to set
+xid=$3	# winid
+
+
+uri=`{xprop -id $xid _SURF_URI | cut -d '"' -f 2}
+kw=`{xprop -id $xid _SURF_FIND | cut -d '"' -f 2}
+dmenu='dmenu -e '^$xid
+bmarks=$HOME/.surf/bookmarks.txt
+logfile=$HOME/.surf/surf.rc.log
+
+fn log {
+  echo $* > $logfile
+}
+
+fn s_xprop {
+	if(test -n $2) xprop -id $xid -f $1 8s -set $1 $2
+}
+
+log surf.rc p $1 q $2 xid $3
+
+switch($p) {
+  case _SURF_FIND
+	ret=`{echo $kw | $dmenu -p find:}
+	log s_xprop $q $ret
+	s_xprop $q $ret
+  case _SURF_URI
+	sel=`{tac $bmarks >[2] /dev/null | dmenu -e $xid -p 'uri [dgtwy*]:'}
+	if(test -z $sel){
+	  log No selection: $sel. Exiting.
+	  exit
+	}
+	log sel: $sel $#sel
+	# if only one argument given interpret it as an uri
+	if(test $#sel -gt 1) switch($sel(1)){
+	  case d # del.icio.us
+		ret='http://del.icio.us/save?url='^$sel(2-)
+	  case g # google for it
+		ret='http://www.google.com/search?q='^$sel(2-)
+	  case t # tinyurl
+		ret='http://tinyurl.com/create.php?url='^$sel(2-)
+	  case w # wikipedia
+		ret='http://wikipedia.org/wiki/'^$sel(2-)
+	  case y # youtube
+		ret='http://www.youtube.com/results?search_query='^$sel(2-)
+	}
+	if not ret=$sel
+
+	log "s_xprop" $q $ret
+	s_xprop $q $ret
+}
