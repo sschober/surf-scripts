@@ -16,8 +16,8 @@ To use it put in it your PATH and use the following SETPROP
 definition in config.h:
 
     #define SETPROP(p, q)     { .v = (char *[]){ "/bin/sh", "-c", \
-	"surf.rc $0 $1 $2",\
-	p, q, winid, NULL } }
+	    "surf.rc $0 $1 $2",\
+	    p, q, winid, NULL } }
 
 ## Notes
 
