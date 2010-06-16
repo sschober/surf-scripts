@@ -6,11 +6,13 @@ A small helper script for surf which:
 
 - interprets stuff like
 
-    g rtp sdp
+      `g rtp sdp`
 
   as a request to google for the latter two strings.
 
 ## Usage
+
+### Installation
 
 To use it put in it your PATH and use the following SETPROP
 definition in config.h:
@@ -18,6 +20,16 @@ definition in config.h:
     #define SETPROP(p, q)     { .v = (char *[]){ "/bin/sh", "-c", \
 	    "surf.rc $0 $1 $2",\
 	    p, q, winid, NULL } }
+
+### Googling
+
+`g <word>[ <word>]*`
+
+or
+
+`<word>[ <word>]+`
+
+(a single `<word>` is interpreted as an URL)
 
 ## Notes
 
