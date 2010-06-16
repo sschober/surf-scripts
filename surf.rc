@@ -1,4 +1,5 @@
 #!/usr/bin/env rc
+#!/opt/plan9/bin/rc -x
 
 p=$1	# property to read/select
 q=$2	# property to set
@@ -28,23 +29,28 @@ switch($p) {
 	s_xprop $q $ret
   case _SURF_URI
 	sel=`{tac $bmarks >[2] /dev/null | dmenu -e $xid -p 'uri [dgtwy*]:'}
-	if(test -z $sel){
+	if(test -z $"sel){
 	  log No selection: $sel. Exiting.
 	  exit
 	}
 	log sel: $sel $#sel
 	# if only one argument given interpret it as an uri
-	if(test $#sel -gt 1) switch($sel(1)){
-	  case d # del.icio.us
-		ret='http://del.icio.us/save?url='^$sel(2-)
-	  case g # google for it
-		ret='http://www.google.com/search?q='^$sel(2-)
-	  case t # tinyurl
-		ret='http://tinyurl.com/create.php?url='^$sel(2-)
-	  case w # wikipedia
-		ret='http://wikipedia.org/wiki/'^$sel(2-)
-	  case y # youtube
-		ret='http://www.youtube.com/results?search_query='^$sel(2-)
+	if(test $#sel -gt 1) {
+	  what=$sel(2-)
+	  switch($sel(1)){
+	    case d # del.icio.us
+		  ret='http://del.icio.us/save?url='^$"what
+	    case g # google for it
+		  ret='http://www.google.com/search?q='^$"what
+	    case t # tinyurl
+		  ret='http://tinyurl.com/create.php?url='^$"what
+	    case w # wikipedia
+		  ret='http://wikipedia.org/wiki/'^$"what
+	    case y # youtube
+		  ret='http://www.youtube.com/results?search_query='^$"what
+	    case *
+		  ret='http://www.google.com/search?q='^$"sel
+	  }
 	}
 	if not ret=$sel
 
