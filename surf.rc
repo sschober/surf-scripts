@@ -8,7 +8,7 @@ xid=$3	# winid
 
 uri=`{xprop -id $xid _SURF_URI | cut -d '"' -f 2}
 kw=`{xprop -id $xid _SURF_FIND | cut -d '"' -f 2}
-dmenu='dmenu -e '^$xid
+
 bmarks=$HOME/.surf/bookmarks.txt
 logfile=$HOME/.surf/surf.rc.log
 
@@ -24,7 +24,7 @@ log surf.rc p $1 q $2 xid $3
 
 switch($p) {
   case _SURF_FIND
-	ret=`{echo $kw | $dmenu -p find:}
+	ret=`{echo $kw | dmenu -e $xid -p 'find:'}
 	log s_xprop $q $ret
 	s_xprop $q $ret
   case _SURF_URI
