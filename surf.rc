@@ -13,7 +13,7 @@ bmarks=$HOME/.surf/bookmarks.txt
 logfile=$HOME/.surf/surf.rc.log
 
 fn log {
-  echo $* > $logfile
+  echo $* >> $logfile
 }
 
 fn s_xprop {
@@ -33,7 +33,7 @@ switch($p) {
 	  log No selection: $sel. Exiting.
 	  exit
 	}
-	log sel: $sel $#sel
+	log dmenu: $sel
 	# if only one argument given interpret it as an uri
 	if(test $#sel -gt 1) {
 	  what=$sel(2-)
@@ -54,6 +54,6 @@ switch($p) {
 	}
 	if not ret=$sel
 
-	log "s_xprop" $q $ret
+	log s_xprop $q $ret
 	s_xprop $q $ret
 }
