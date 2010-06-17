@@ -6,9 +6,6 @@ q=$2	# property to set
 xid=$3	# winid
 
 
-uri=`{xprop -id $xid _SURF_URI | cut -d '"' -f 2}
-kw=`{xprop -id $xid _SURF_FIND | cut -d '"' -f 2}
-
 bmarks=$HOME/.surf/bookmarks.txt
 logfile=$HOME/.surf/surf.rc.log
 
@@ -20,6 +17,12 @@ fn s_xprop {
 	if(test -n $2) xprop -id $xid -f $1 8s -set $1 $2
 }
 
+# $1 variable to read into
+# $2 property to read
+fn r_xprop {
+  $1=`{xprop -id $xid $2 | cut -d '"' -f}
+}
+
 fn s_write_f {
   if(test -n $2){
     log $1 ' <- ' $2
@@ -28,6 +31,10 @@ fn s_write_f {
 }
 
 log surf.rc $1 $2 $3
+
+# don't like the way the assignment to uri is obfuscated here
+r_xprop uri _SURF_URI
+r_xprop kw _SURF_FIND
 
 switch($p) {
   case _SURF_BMARK
