@@ -70,3 +70,5 @@ switch($p) {
 	log s_xprop $q $ret
 	s_xprop $q $ret
 }
+
+# vim:ft=rcsh
