@@ -10,7 +10,8 @@ bmarks=$HOME/.surf/bookmarks.txt
 logfile=$HOME/.surf/surf.rc.log
 
 fn log {
-  echo $* >> $logfile
+  now=`{date '+%Y-%m-%d %H:%M:%S'}
+  echo '['$"now']' $* >> $logfile
 }
 
 fn s_xprop {
