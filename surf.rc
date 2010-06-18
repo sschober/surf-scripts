@@ -20,7 +20,7 @@ fn s_xprop {
 # $1 variable to read into
 # $2 property to read
 fn r_xprop {
-  $1=`{xprop -id $xid $2 | cut -d '"' -f}
+  $1=`{xprop -id $xid $2 | cut -d '"' -f 2}
 }
 
 fn s_write_f {
