@@ -6,8 +6,9 @@ q=$2	# property to set
 xid=$3	# winid
 
 
-bmarks=$HOME/.surf/bookmarks.txt
-logfile=$HOME/.surf/surf.rc.log
+dotsurf=$HOME/.surf
+bmarks=$dotsurf/bookmarks.txt
+logfile=$dotsurf/surf.rc.log
 
 fn log {
   now=`{date '+%Y-%m-%d %H:%M:%S'}
@@ -44,12 +45,12 @@ switch($p) {
 	sort -u -o $bmarks $bmarks
 
   case _SURF_FIND
-	ret=`{echo $kw | dmenu -e $xid -p 'find:'}
+	ret=`{echo $kw | dmenu -p 'find:'}
 	log s_xprop $q $ret
 	s_xprop $q $ret
 
   case _SURF_URI
-	sel=`{tac $bmarks >[2] /dev/null | dmenu -e $xid -p 'uri [dgtwy*]:'}
+	sel=`{tac $bmarks >[2] /dev/null | dmenu -p 'uri [dgtwy*]:'}
 	if(test -z $"sel){
 	  log No selection: $sel. Exiting.
 	  exit
