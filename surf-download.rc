@@ -1,0 +1,31 @@
+#!/usr/bin/env rc
+#!/opt/plan9/bin/rc -x
+
+dotsurf=$HOME/.surf
+cookies=$dotsurf/cookies.txt
+logfile=$dotsurf/surf-download.rc.log
+
+fn log {
+  now=`{date '+%Y-%m-%d %H:%M:%S'}
+  echo '['$"now']' $* >> $logfile
+}
+
+DOWNLOAD_URI=$1
+DOWNLOAD_DIR=$HOME/Downloads/surf/
+DOWNLOAD_CMD=wget
+DOWNLOAD_OPTIONS=(-o $dotsurf/wget.log -P $DOWNLOAD_DIR --load-cookies $cookies)
+
+log $DOWNLOAD_CMD $"DOWNLOAD_OPTIONS $DOWNLOAD_URI
+
+# I define DOWNLOAD_OPTIONS as a list. Using it as
+# $"DOWNLOAD_OPTIONS in the command doesn't yield the expected
+# result, as all constituents are place into one argument and wget
+# gets naturally confused.
+#
+# TODO: Find a better solution!
+#
+# Execute download command
+# e.g.: wget -o ~/.surf/wget.log --load-cookies ~/.surf/cookies.txt '$0';
+$DOWNLOAD_CMD -o $dotsurf/wget.log -P $DOWNLOAD_DIR --load-cookies $cookies $DOWNLOAD_URI
+
+# vim:ft=rcsh
