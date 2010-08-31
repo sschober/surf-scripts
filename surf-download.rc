@@ -10,31 +10,26 @@ fn log {
   echo '['$"now']' $* >> $logfile
 }
 
-DOWNLOAD_URI=$1
-DOWNLOAD_DIR=$HOME/Downloads/surf/
-DOWNLOAD_CMD=wget
-DOWNLOAD_OPTIONS=(-o $dotsurf/wget.log -P $DOWNLOAD_DIR --load-cookies $cookies)
+DWN_CMD=wget
+DWN_URI=$1
+DWN_DIR=$HOME/Downloads/surf/
+DWN_OPT_LOG='--output-file='^$dotsurf/wget.log
+DWN_OPT_TRG='--directory-prefix='^$DWN_DIR
+DWN_OPT_COK=('--load-cookies' $cookies)
 
-log $DOWNLOAD_CMD $"DOWNLOAD_OPTIONS $DOWNLOAD_URI
+CMD=($DWN_CMD $DWN_OPT_LOG $DWN_OPT_TRG $DWN_OPT_COK)
 
-# I define DOWNLOAD_OPTIONS as a list. Using it as
-# $"DOWNLOAD_OPTIONS in the command doesn't yield the expected
-# result, as all constituents are place into one argument and wget
-# gets naturally confused.
-#
-# TODO: Find a better solution!
-#
+log $CMD $DWN_URI
+
 # Execute download command
 # e.g.: wget -o ~/.surf/wget.log --load-cookies ~/.surf/cookies.txt '$0';
-$DOWNLOAD_CMD -o $dotsurf/wget.log -P $DOWNLOAD_DIR --load-cookies $cookies $DOWNLOAD_URI
+$CMD $DWN_URI
 result=$status
-log 'Result: '$result
+#log 'Result: '$result
 if(test $result -eq 6){
   log 'Asking for username and password'
   user=`{dmenu -p 'User: ' <[0=]}
   pass=`{dmenu -p 'Pass: ' -nf black -nb black -sf black -sb white <[0=]}
-  log 'OK'
-  $DOWNLOAD_CMD -o $dotsurf/wget.log -P $DOWNLOAD_DIR --load-cookies $cookies '--user='^$user '--password='^$pass $DOWNLOAD_URI
+  $CMD '--user='^$user '--password='^$pass $DWN_URI
 }
-log 'DONE'
 # vim:ft=rcsh
