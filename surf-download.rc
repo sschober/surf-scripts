@@ -27,5 +27,14 @@ log $DOWNLOAD_CMD $"DOWNLOAD_OPTIONS $DOWNLOAD_URI
 # Execute download command
 # e.g.: wget -o ~/.surf/wget.log --load-cookies ~/.surf/cookies.txt '$0';
 $DOWNLOAD_CMD -o $dotsurf/wget.log -P $DOWNLOAD_DIR --load-cookies $cookies $DOWNLOAD_URI
-
+result=$status
+log 'Result: '$result
+if(test $result -eq 6){
+  log 'Asking for username and password'
+  user=`{dmenu -p 'User: ' <[0=]}
+  pass=`{dmenu -p 'Pass: ' -nf black -nb black -sf black -sb white <[0=]}
+  log 'OK'
+  $DOWNLOAD_CMD -o $dotsurf/wget.log -P $DOWNLOAD_DIR --load-cookies $cookies '--user='^$user '--password='^$pass $DOWNLOAD_URI
+}
+log 'DONE'
 # vim:ft=rcsh
